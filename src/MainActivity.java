@@ -3,6 +3,7 @@ import org.apache.commons.cli.*;
 import java.io.*;
 
 public class MainActivity {
+
     public static void main(String[] args) throws Exception {
         Options options = new Options();
 
@@ -22,6 +23,7 @@ public class MainActivity {
         create.setRequired(false);
         options.addOption(create);
 
+
         if (args.length == 0) {
             System.out.println("No options found!");
             return;
@@ -31,20 +33,65 @@ public class MainActivity {
 
         switch (option){
             case "-cp":
+                if(args.length<3){
+                optionsNumberErr();
+                return;
+                }
                 copyFile(args[1], args[2]);
                 break;
             case "-rm":
+                if(args.length<2){
+                    optionsNumberErr();
+                    return;
+                }
                 deleteFile(args[1]);
                 break;
             case "-mv":
+                if(args.length<3){
+                    optionsNumberErr();
+                    return;
+                }
                 copyFile(args[1], args[2]);
                 deleteFile(args[1]);
                 break;
             case "-f":
+                if(args.length<2){
+                    optionsNumberErr();
+                    return;
+                }
                 createFile(args[1]);
+                break;
+            default:
+                optionsNumberErr();
                 break;
         }
     }
+
+
+    public static void optionsNumberErr(){
+        Options options = new Options();
+        HelpFormatter formatter = new HelpFormatter();
+
+        Option copy = new Option("cp", "input", true, "copy file");
+        copy.setRequired(false);
+        options.addOption(copy);
+
+        Option remove = new Option("rm", "remove", true, "remove file");
+        remove.setRequired(false);
+        options.addOption(remove);
+
+        Option move = new Option("mv", "move", true, "move file");
+        move.setRequired(false);
+        options.addOption(move);
+
+        Option create = new Option("f", "createFile", true, "create file");
+        create.setRequired(false);
+        options.addOption(create);
+
+        System.out.println("Not enough options!");
+        formatter.printHelp("utility-name", options);
+    }
+
 
     public static void copyFile (String s, String s2) throws IOException {
         int num;
