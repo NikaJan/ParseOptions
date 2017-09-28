@@ -48,12 +48,27 @@ public class MainActivity {
                 }
                 createFile(args[1]);
                 break;
+            case "-f":
+                if (args.length < 2) {
+                    optionsNumberErr();
+                    return;
+                }
+                createFile(args[1]);
+                break;
             case "-mkdir":
                 if (args.length < 2) {
                     optionsNumberErr();
                     return;
                 }
                 createDir(args[1]);
+                break;
+            case "-ls":
+                if (args.length < 2) {
+                    optionsNumberErr();
+                    return;
+                }
+                File mSourceList = new File(args[1]);
+                printFileList(mSourceList);
                 break;
             default:
                 optionsNumberErr();
@@ -85,6 +100,10 @@ public class MainActivity {
         Option mkdir = new Option("mkdir", "createDir", true, "create directory");
         mkdir.setRequired(false);
         options.addOption(mkdir);
+
+        Option ls = new Option("ls", "printFileList", true, "print file list");
+        ls.setRequired(false);
+        options.addOption(ls);
 
         System.out.println("Not enough or wrong options!");
         formatter.printHelp("ParseOptions", options);
@@ -192,6 +211,16 @@ public class MainActivity {
             }
         } else {
             file.delete();
+        }
+    }
+    public static void printFileList(File file) throws IOException{
+        File[] filesList = file.listFiles();
+        for (File f : filesList) {
+            if (f.isDirectory())
+                System.out.println(f.getName());
+            if (f.isFile()) {
+                System.out.println(f.getName());
+            }
         }
     }
 }
