@@ -2,12 +2,13 @@ import org.apache.commons.cli.*;
 
 import javax.imageio.IIOException;
 import java.io.*;
+import java.util.function.Predicate;
 
 public class MainActivity {
 
     public static void main(String[] args) throws Exception {
 
-        if (args.length == 0) {
+        /*if (args.length == 0) {
             optionsNumberErr();
             return;
         }
@@ -73,11 +74,43 @@ public class MainActivity {
             default:
                 optionsNumberErr();
                 break;
+        }*/
+
+
+
+        //d1.test("123");
+        final int maxAge = 1;
+
+        TestEmploer [] s = {new TestEmploer(){}, new TestEmploer(), new TestEmploer()};
+        s[0].age = 1;
+        s[0].firstName = "f11";
+        s[0].secondName = "s1";
+
+        s[1].age = 2;
+        s[1].firstName = "f2";
+        s[1].secondName = "s2";
+
+        s[2].age = 3;
+        s[2].firstName = "f3";
+        s[2].secondName = "s1";
+
+        Predicate<TestEmploer> d1 = (a)->
+        {
+            return a.age > maxAge && a.firstName.equals("f3");
+        };
+
+        test(d1, s);
+    }
+
+    public static void test(Predicate<TestEmploer> d, TestEmploer[] s){
+        for(TestEmploer seed : s){
+            if(d.test(seed)){
+                System.out.println("Success");
+            }
         }
     }
 
-
-    public static void optionsNumberErr() {
+    /*public static void optionsNumberErr() {
         Options options = new Options();
         HelpFormatter formatter = new HelpFormatter();
 
@@ -222,5 +255,5 @@ public class MainActivity {
                 System.out.println(f.getName());
             }
         }
-    }
+    }*/
 }
